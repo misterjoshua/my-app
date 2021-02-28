@@ -9,5 +9,10 @@ jobs:
     env:
       CI: "true"
     steps:
-      - run: yarn
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install --check-files --frozen-lockfile
       - run: yarn expo build:android
