@@ -15,3 +15,7 @@ jobs:
       - uses: android-actions/setup-android@v2
       - run: yarn install --check-files --frozen-lockfile
       - run: cd android && ./gradlew assembleRelease
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android_apk
+          path: android/app/outputs/apk/
