@@ -9,4 +9,5 @@ jobs:
     env:
       CI: "true"
     steps:
-      - run: npm i -g expo-cli
+      - run: yarn
+      - run: yarn expo build:android
