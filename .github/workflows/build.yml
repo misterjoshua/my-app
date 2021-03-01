@@ -23,3 +23,19 @@ jobs:
         with:
           name: android_apk
           path: android/app/build/outputs/apk/
+  build_ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install --check-files --frozen-lockfile
+      - run: cd ios && pod install
+      - run: xcodebuild -project myapp.xcodeproj -archivePath myapp.xcarchive -allowProvisioningUpdates
+      - run: xcodebuild -exportArchive -archivePath ../myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android_apk
+          path: android/app/build/outputs/apk/
