@@ -35,11 +35,9 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --check-files --frozen-lockfile
       - run: cd ios && pod install
-      - run: |
-          find .
-          xcodebuild -workspace myapp.xcworkspace -scheme myapp archive -archivePath myapp.xcarchive -allowProvisioningUpdates
-          xcodebuild -exportArchive -archivePath ./myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
-          mv myapp.ipa ../myapp.ipa
+      - run: cd ios && xcodebuild -workspace myapp.xcworkspace -scheme myapp archive -archivePath myapp.xcarchive -allowProvisioningUpdates
+      - run: cd ios && xcodebuild -exportArchive -archivePath ./myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
+      - run: cd ios && mv myapp.ipa ../myapp.ipa
       - uses: actions/upload-artifact@v2
         with:
           name: ios_ipa
